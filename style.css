@@ -19,6 +19,12 @@ html {
   scroll-behavior: smooth;
 }
 
+html,
+.chapter-window {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 body {
   margin: 0;
   display: flex;
