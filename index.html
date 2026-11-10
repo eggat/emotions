@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="走進《腦筋急轉彎》的腦內總部。跟著萊莉探索情緒的改變，操作回憶球、選擇故事分支，再挑戰十題情緒測驗。">
+  <meta name="theme-color" content="#17102c">
+  <title>腦筋急轉彎｜情緒的改變</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="hub.css">
+  <script src="index.js" defer></script>
+  <script src="hub.js" defer></script>
+</head>
+
+<body>
+  <svg class="symbols" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="spark" viewBox="0 0 32 32">
+      <path d="M16 1c0 9-6 15-15 15 9 0 15 6 15 15 0-9 6-15 15-15-9 0-15-6-15-15Z" fill="currentColor" />
+    </symbol>
+    <symbol id="photo" viewBox="0 0 32 32">
+      <g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="5" width="26" height="22" rx="4" />
+        <circle cx="21" cy="11" r="2" />
+        <path d="m4 23 8-9 7 8 4-4 5 5" />
+      </g>
+    </symbol>
+    <symbol id="sun" viewBox="0 0 48 48">
+      <circle cx="24" cy="24" r="13" fill="#ffdb65" stroke="currentColor" stroke-width="1.8" />
+      <path d="M24 3v4m0 34v4M3 24h4m34 0h4M9 9l3 3m24 24 3 3M9 39l3-3m24-24 3-3m-19 15c2 4 6 4 8 0" fill="none"
+        stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+      <circle cx="20" cy="21" r="1" fill="currentColor" />
+      <circle cx="28" cy="21" r="1" fill="currentColor" />
+    </symbol>
+    <symbol id="drop" viewBox="0 0 48 48">
+      <path d="M24 5C20 13 11 21 11 29a13 13 0 0 0 26 0c0-8-9-16-13-24Z" fill="#9fc7ff" stroke="currentColor"
+        stroke-width="1.8" stroke-linejoin="round" />
+      <path d="M20 33q4-4 8 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+      <circle cx="20" cy="26" r="1.2" fill="currentColor" />
+      <circle cx="28" cy="26" r="1.2" fill="currentColor" />
+    </symbol>
+    <symbol id="flame" viewBox="0 0 48 48">
+      <path
+        d="M25 4c1 10 10 11 9 19 2-1 3-3 3-5 4 5 5 10 3 15-3 7-9 11-16 11A16 16 0 0 1 8 28c0-6 3-10 7-13-1 5 1 7 3 8 0-8 7-11 7-19Z"
+        fill="#ffa78d" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+      <path d="m17 27 4 2m10-2-4 2m-6 7q3-3 6 0" fill="none" stroke="currentColor" stroke-width="1.8"
+        stroke-linecap="round" />
+    </symbol>
+    <symbol id="bolt" viewBox="0 0 48 48">
+      <path d="M24 5h12L26 22h12L17 44l4-17H10L24 5Z" fill="#cbb4ff" stroke="currentColor" stroke-width="1.8"
+        stroke-linejoin="round" />
+      <circle cx="20" cy="21" r="1.2" fill="currentColor" />
+      <circle cx="25" cy="20" r="1.2" fill="currentColor" />
+      <circle cx="23" cy="25" r="1.2" fill="currentColor" />
+    </symbol>
+    <symbol id="leaf" viewBox="0 0 48 48">
+      <path d="M12 37C1 25 12 12 37 9c4 21-5 34-20 30Z" fill="#a6d797" stroke="currentColor" stroke-width="1.8"
+        stroke-linejoin="round" />
+      <path d="M8 43c4-7 8-11 13-14m2 0 5 1" fill="none" stroke="currentColor" stroke-width="1.8"
+        stroke-linecap="round" />
+      <circle cx="23" cy="24" r="1.2" fill="currentColor" />
+      <circle cx="30" cy="23" r="1.2" fill="currentColor" />
+    </symbol>
+  </svg>
+
+  <main>
+    <section class="chapter-screen opening" id="top" aria-labelledby="page-title">
+      <div class="hub shell">
+        <div class="hub-heading">
+          <p class="hub-kicker"><svg aria-hidden="true"><use href="#spark" /></svg> INSIDE OUT · 腦內總部</p>
+          <h1 id="page-title">腦筋急轉彎<span>情緒的改變</span></h1>
+        </div>
+        <div class="hub-stage">
+          <div class="hub-orbit" aria-hidden="true"></div>
+          <div class="hub-sphere">
+            <div class="hub-sphere-fallback" aria-hidden="true"></div>
+            <canvas class="hub-canvas" aria-hidden="true"></canvas>
+            <button class="hub-grip" type="button" aria-label="旋轉回憶球" aria-describedby="hub-instructions" hidden></button>
+          </div>
+          <div class="hub-portals" role="navigation" aria-label="回憶球章節入口">
+            <a class="hub-portal portal-emotions" href="#emotions"><span aria-hidden="true">01</span> 情緒角色</a>
+            <a class="hub-portal portal-story" href="#story"><span aria-hidden="true">02</span> 萊莉故事</a>
+            <a class="hub-portal portal-memory" href="#memory"><span aria-hidden="true">03</span> 回憶實驗</a>
+            <a class="hub-portal portal-mission" href="#mission"><span aria-hidden="true">04</span> 情境任務</a>
+            <a class="hub-portal portal-lab" href="#lab"><span aria-hidden="true">05</span> 心情練習</a>
+            <a class="hub-portal portal-quiz" href="#quiz"><span aria-hidden="true">06</span> 情緒測驗</a>
+          </div>
+        </div>
+        <p class="hub-instructions" id="hub-instructions" hidden><strong>拖曳旋轉</strong><span class="hub-instruction-divider" aria-hidden="true">✦</span><strong>點選入口</strong><span class="hub-keyboard-hint">也可用方向鍵轉動球體</span></p>
+        <noscript><p class="hub-instructions">開啟 JavaScript 即可轉動回憶球並閱讀各章節。</p></noscript>
+      </div>
+    </section>
+
+    <dialog class="chapter-window" aria-label="回憶球內容頁">
+      <header class="chapter-toolbar">
+        <p class="chapter-window-title"><svg aria-hidden="true"><use href="#spark" /></svg><span></span></p>
+        <button class="chapter-close" type="button"><span>回到回憶球</span><span aria-hidden="true">×</span></button>
+        <div class="reading-progress" aria-hidden="true"></div>
+      </header>
+      <div class="chapter-scroll">
+    <section class="chapter-screen emotions" id="emotions" aria-labelledby="emotions-title">
+      <div class="shell chapter-body">
+        <div class="section-heading">
+          <div>
+            <p class="chapter"><span>01</span> THE EMOTIONS</p>
+            <h2 id="emotions-title">今天，<em>誰在掌舵？</em></h2>
+          </div>
+          <p>點選角色，看看每一種情緒會在什麼時候出現。</p>
+        </div>
+
+        <div class="emotion-options" role="group" aria-label="選擇情緒角色">
+          <button type="button" class="emotion-card joy" data-emotion="joy" aria-pressed="true"
+            aria-controls="emotion-detail">
+            <span class="card-index">01</span><svg aria-hidden="true">
+              <use href="#sun" />
+            </svg><strong>樂樂</strong><span class="card-english">JOY</span>
+          </button>
+          <button type="button" class="emotion-card sadness" data-emotion="sadness" aria-pressed="false"
+            aria-controls="emotion-detail">
+            <span class="card-index">02</span><svg aria-hidden="true">
+              <use href="#drop" />
+            </svg><strong>憂憂</strong><span class="card-english">SADNESS</span>
+          </button>
+          <button type="button" class="emotion-card anger" data-emotion="anger" aria-pressed="false"
+            aria-controls="emotion-detail">
+            <span class="card-index">03</span><svg aria-hidden="true">
+              <use href="#flame" />
+            </svg><strong>怒怒</strong><span class="card-english">ANGER</span>
+          </button>
+          <button type="button" class="emotion-card fear" data-emotion="fear" aria-pressed="false"
+            aria-controls="emotion-detail">
+            <span class="card-index">04</span><svg aria-hidden="true">
+              <use href="#bolt" />
+            </svg><strong>驚驚</strong><span class="card-english">FEAR</span>
+          </button>
+          <button type="button" class="emotion-card disgust" data-emotion="disgust" aria-pressed="false"
+            aria-controls="emotion-detail">
+            <span class="card-index">05</span><svg aria-hidden="true">
+              <use href="#leaf" />
+            </svg><strong>厭厭</strong><span class="card-english">DISGUST</span>
+          </button>
+        </div>
+
+        <div class="emotion-detail joy" id="emotion-detail">
+          <div class="detail-image image-slot" data-image="images/joy.jpg" data-alt="樂樂角色圖片">
+            <div class="image-placeholder"><svg aria-hidden="true">
+                <use href="#photo" />
+              </svg><span>角色圖片預留</span></div>
+          </div>
+          <div class="detail-copy" aria-live="polite">
+            <p class="detail-label" id="emotion-label">JOY · 快樂</p>
+            <h3 id="emotion-name">樂樂</h3>
+            <p id="emotion-description">樂樂擅長在日常裡找出值得開心的事。到了陌生的地方，她會先想，有沒有什麼新的事可以期待？</p>
+            <dl class="emotion-notes">
+              <div>
+                <dt>它在意什麼</dt>
+                <dd id="emotion-signal">留意那些讓你想靠近、想再試一次的事。</dd>
+              </div>
+              <div>
+                <dt>生活裡的例子</dt>
+                <dd id="emotion-example">新同學主動邀你一起吃午餐，你開始有點期待明天上學。</dd>
+              </div>
+              <div>
+                <dt>身體可能出現的線索</dt>
+                <dd id="emotion-body">嘴角上揚，想多說幾句，腳步也變輕了。</dd>
+              </div>
+              <div>
+                <dt>可以試著做什麼</dt>
+                <dd id="emotion-action">把這個開心的時刻說給朋友聽，或記下你想再做一次的事。</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+        <noscript>
+          <p>開啟 JavaScript 即可使用角色切換、回憶實驗與測驗。</p>
+        </noscript>
+      </div>
+      <div class="shell chapter-footer">
+        <a class="chapter-link" href="#top"><span aria-hidden="true">←</span> 回憶球</a>
+        <span class="chapter-number" aria-hidden="true">01 / 06</span>
+        <a class="chapter-link" href="#story">萊莉的故事 <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+
+    <section class="chapter-screen story" id="story" aria-labelledby="story-title">
+      <div class="shell chapter-body">
+        <div class="section-heading">
+          <div>
+            <p class="chapter"><span>02</span> THE STORY</p>
+            <h2 id="story-title">一顆回憶球，<em>怎麼變色了？</em></h2>
+          </div>
+          <p>從冰球場走到新教室，再回到家裡。點選分鏡，看看同一顆回憶球如何一路變色。以下包含電影劇情。</p>
+        </div>
+        <div class="story-steps" role="group" aria-label="選擇故事片段">
+          <button type="button" data-scene="0" aria-pressed="true" aria-controls="story-detail memory-panel">
+            <span class="story-frame frame-rink" aria-hidden="true">
+              <svg viewBox="0 0 120 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 46 43 20h61L74 47zM39 43l26-21M24 45l28-24m12 24 26-23"/><ellipse cx="59" cy="33" rx="11" ry="4"/><path d="m82 28 9-16m-9 16 11 3"/><ellipse cx="75" cy="39" rx="4" ry="2" fill="currentColor"/>
+              </svg>
+            </span>
+            <span class="story-frame-caption"><small>01</small><strong>以前的冰球場</strong></span>
+          </button>
+          <button type="button" data-scene="1" aria-pressed="false" aria-controls="story-detail memory-panel">
+            <span class="story-frame frame-classroom" aria-hidden="true">
+              <svg viewBox="0 0 120 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="26" y="11" width="67" height="31" rx="2"/><path d="M37 22h22m-22 7h17m14 13v5m-48 6h29v-6H20zm52 0h29v-6H72z"/><path d="M76 17c-2 5-6 8-6 11a6 6 0 0 0 12 0c0-3-4-6-6-11Z" fill="currentColor"/>
+              </svg>
+            </span>
+            <span class="story-frame-caption"><small>02</small><strong>教室裡的眼淚</strong></span>
+          </button>
+          <button type="button" data-scene="2" aria-pressed="false" aria-controls="story-detail memory-panel">
+            <span class="story-frame frame-home" aria-hidden="true">
+              <svg viewBox="0 0 120 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m35 32 25-22 25 22M42 28v24h36V28m-24 24V37h12v15M31 52h58"/><path d="M88 15c2 5 3 6 8 8-5 2-6 3-8 8-2-5-3-6-8-8 5-2 6-3 8-8Z" fill="currentColor"/>
+              </svg>
+            </span>
+            <span class="story-frame-caption"><small>03</small><strong>終於說出口</strong></span>
+          </button>
+        </div>
+        <div class="story-detail" id="story-detail" data-scene="0" data-tone="gold">
+          <div class="story-colors" aria-hidden="true">
+            <div class="memory-ball"><svg><use href="#spark" /></svg></div>
+            <span class="memory-display-label" id="story-orb-label">回憶球 / 金色</span>
+          </div>
+          <div class="story-copy" aria-live="polite">
+            <p class="detail-label" id="story-feeling">開心 × 歸屬感</p>
+            <h3 id="story-heading">在冰上，她是球隊的一分子</h3>
+            <p id="story-description">搬家以前，萊莉常和隊友一起打冰球。想到熟悉的冰場和一起練球的朋友，她覺得開心，也知道自己在這裡有個位置。</p>
+            <p class="story-observation" id="story-observation">她在意的是和隊友一起打球的時光。先記住這個線索，再看看搬家後哪裡變了。</p>
+            <a class="story-memory-link" href="#memory">帶著這顆球去回憶實驗 <span aria-hidden="true">↓</span></a>
+          </div>
+        </div>
+        <div class="reflection">
+          <img src="images/cover.jpg" alt="五位情緒角色站在腦內總部的控制台前" loading="lazy">
+          <div>
+            <p class="detail-label">從電影裡找線索</p>
+            <h3>控制台，交給誰？</h3>
+            <p>樂樂一開始努力讓萊莉保持開心。當萊莉說出自己想家，憂憂也讓家人聽見了她的需要。回想這段故事，你覺得五位角色中，誰最容易被忽略？</p>
+          </div>
+        </div>
+      </div>
+      <div class="shell chapter-footer">
+        <a class="chapter-link" href="#emotions"><span aria-hidden="true">←</span> 情緒角色</a>
+        <span class="chapter-number" aria-hidden="true">02 / 06</span>
+        <a class="chapter-link" href="#memory">回憶實驗 <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+
+    <section class="chapter-screen memory" id="memory" aria-labelledby="memory-title">
+      <div class="shell chapter-body">
+        <div class="section-heading">
+          <div>
+            <p class="chapter"><span>03</span> MEMORY MIXER</p>
+            <h2 id="memory-title">同一場球賽，<em>三種看法。</em></h2>
+          </div>
+          <p>這裡會接續你選的分鏡。切換回想的時刻，比較球的顏色和萊莉在意的事。</p>
+        </div>
+        <div class="memory-panel" id="memory-panel" data-tone="gold">
+          <div class="memory-display" aria-hidden="true">
+            <span class="memory-display-label">記憶檔案 / 01</span>
+            <div class="memory-ball"><svg><use href="#spark" /></svg></div>
+            <span class="memory-display-label" id="memory-stage">01 / 以前的冰球場</span>
+          </div>
+          <div class="memory-copy">
+            <p class="detail-label">沿用故事分鏡 · 冰球回憶</p>
+            <div class="memory-options" role="group" aria-label="選擇回想的時刻">
+              <button type="button" data-memory="0" aria-pressed="true" aria-controls="memory-result story-detail">打球當下</button>
+              <button type="button" data-memory="1" aria-pressed="false" aria-controls="memory-result story-detail">搬家之後</button>
+              <button type="button" data-memory="2" aria-pressed="false" aria-controls="memory-result story-detail">和家人聊起</button>
+            </div>
+            <div id="memory-result" aria-live="polite">
+              <p class="memory-feeling" id="memory-feeling">金色 · 開心</p>
+              <h3 id="memory-heading">那天，我們配合得真好！</h3>
+              <p id="memory-description">和隊友一起在冰上奔跑，讓萊莉覺得自己是球隊的一分子。這時，開心最明顯。</p>
+              <p class="memory-clue"><strong>她此刻在意的是</strong> <span id="memory-clue">和隊友一起努力、一起玩。</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="shell chapter-footer">
+        <a class="chapter-link" href="#story"><span aria-hidden="true">←</span> 萊莉的故事</a>
+        <span class="chapter-number" aria-hidden="true">03 / 06</span>
+        <a class="chapter-link" href="#mission">情境任務 <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+
+    <section class="chapter-screen mission" id="mission" aria-labelledby="mission-title">
+      <div class="shell chapter-body">
+        <div class="section-heading">
+          <div>
+            <p class="chapter"><span>04</span> FIELD MISSIONS</p>
+            <h2 id="mission-title">如果換作你，<em>故事怎麼走？</em></h2>
+          </div>
+          <p>每個任務有三條分支。試過同一個任務的兩種回應，就能比較它們帶來的心情變化。</p>
+        </div>
+        <div class="mission-selector" role="group" aria-label="選擇情境任務">
+          <button type="button" data-mission="0" aria-pressed="true" aria-controls="mission-panel"><span>01 / 學校</span><strong>第一天午休</strong></button>
+          <button type="button" data-mission="1" aria-pressed="false" aria-controls="mission-panel"><span>02 / 球場</span><strong>失誤的那一球</strong></button>
+          <button type="button" data-mission="2" aria-pressed="false" aria-controls="mission-panel"><span>03 / 家裡</span><strong>好想念以前的家</strong></button>
+        </div>
+        <div class="mission-panel" id="mission-panel">
+          <div class="mission-scene">
+            <p class="detail-label">事件紀錄</p>
+            <h3 id="mission-heading">一張空著的椅子</h3>
+            <p id="mission-description">新班級的第一個午休，大家已經坐成一圈。你看到旁邊還有空位，想過去，又怕打擾他們。</p>
+            <p class="mission-start" id="mission-start">開始的心情 · 緊張 ＋ 期待</p>
+          </div>
+          <div class="mission-interaction">
+            <div id="mission-decision">
+              <h3 id="mission-prompt" tabindex="-1">你會怎麼做？</h3>
+              <div id="mission-choices" class="mission-choices" role="group" aria-labelledby="mission-prompt"></div>
+            </div>
+            <div id="mission-outcome" hidden>
+              <p class="detail-label">接下來可能發生</p>
+              <h3 id="mission-outcome-heading" tabindex="-1"></h3>
+              <p id="mission-outcome-description"></p>
+              <p class="mission-shift" id="mission-outcome-shift"></p>
+              <div class="mission-actions">
+                <button type="button" class="primary-button" id="mission-retry">試試另一條分支 <span aria-hidden="true">↻</span></button>
+                <a class="mission-compare-link" href="#mission-compare" hidden>查看路線比較 <span aria-hidden="true">↓</span></a>
+              </div>
+            </div>
+            <p id="mission-count" class="mission-count" aria-live="polite"></p>
+            <noscript><p>開啟 JavaScript 即可選擇故事分支。</p></noscript>
+          </div>
+        </div>
+        <section class="mission-compare" id="mission-compare" aria-labelledby="mission-compare-title" tabindex="-1" hidden>
+          <div class="mission-compare-heading">
+            <div>
+              <p class="detail-label">ROUTE COMPARISON</p>
+              <h3 id="mission-compare-title">同一個起點，不同的心情走向</h3>
+            </div>
+            <p id="mission-compare-caption"></p>
+          </div>
+          <p class="mission-swipe-hint">左右滑動可看其他路線</p>
+          <div class="mission-routes" id="mission-routes" role="group" aria-label="已探索的路線" tabindex="0"></div>
+          <template id="mission-route-template">
+            <article class="mission-route">
+              <h4 class="route-number"></h4>
+              <dl>
+                <div><dt>起始心情</dt><dd class="route-start"></dd></div>
+                <div><dt>採取的行動</dt><dd class="route-action"></dd></div>
+                <div><dt>後來的感受</dt><dd class="route-shift"></dd></div>
+              </dl>
+            </article>
+          </template>
+        </section>
+      </div>
+      <div class="shell chapter-footer">
+        <a class="chapter-link" href="#memory"><span aria-hidden="true">←</span> 回憶實驗</a>
+        <span class="chapter-number" aria-hidden="true">04 / 06</span>
+        <a class="chapter-link" href="#lab">心情練習 <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+
+    <section class="chapter-screen lab" id="lab" aria-labelledby="lab-title">
+      <div class="shell chapter-body">
+        <div class="section-heading">
+          <div>
+            <p class="chapter"><span>05</span> EMOTION LAB</p>
+            <h2 id="lab-title">我的心情，<em>是什麼顏色？</em></h2>
+          </div>
+          <p>選一個生活情境，或用自己的經驗調出一顆心情球。試著替感受取個名字。</p>
+        </div>
+        <div class="lab-grid">
+          <div class="lab-options" role="group" aria-label="選擇生活情境">
+            <button type="button" data-situation="0" aria-pressed="true" aria-controls="lab-result"><span>01</span>
+              第一天到新班級 <b aria-hidden="true">↗</b></button>
+            <button type="button" data-situation="1" aria-pressed="false" aria-controls="lab-result"><span>02</span>
+              練很久卻輸了比賽 <b aria-hidden="true">↗</b></button>
+            <button type="button" data-situation="2" aria-pressed="false" aria-controls="lab-result"><span>03</span>
+              好朋友忘了約定 <b aria-hidden="true">↗</b></button>
+            <button type="button" data-situation="3" aria-pressed="false" aria-controls="lab-result"><span>04</span>
+              原本的計畫臨時取消 <b aria-hidden="true">↗</b></button>
+            <button type="button" data-situation="4" aria-pressed="false" aria-controls="lab-result"><span>05</span>
+              要在大家面前表演 <b aria-hidden="true">↗</b></button>
+            <button type="button" data-situation="5" aria-pressed="false" aria-controls="lab-result"><span>06</span>
+              畢業那天和同學道別 <b aria-hidden="true">↗</b></button>
+          </div>
+          <article class="lab-result" id="lab-result" aria-live="polite">
+            <p class="detail-label">兩種可能的感受</p>
+            <h3 id="lab-feelings">期待，也有點緊張</h3>
+            <p id="lab-description">你期待認識新朋友，也會擔心下課時沒有人可以說話。</p>
+            <p class="lab-question" id="lab-question">如果旁邊也有人看起來很緊張，你會用哪一句話開頭？</p>
+          </article>
+        </div>
+        <div class="palette-panel" id="palette" tabindex="-1">
+          <div class="palette-art" aria-hidden="true">
+            <span>MY EMOTION ORB</span>
+            <div class="palette-ball"><svg><use href="#spark" /></svg></div>
+          </div>
+          <div class="palette-copy">
+            <p class="detail-label">互動調色盤</p>
+            <h3>替今天做一顆心情球。</h3>
+            <p>選一到兩種感受。選了兩種，就能調整哪一種更明顯。</p>
+            <div class="palette-options" role="group" aria-label="選擇心情">
+              <button type="button" class="joy" data-palette="joy" aria-pressed="false">開心</button>
+              <button type="button" class="sadness" data-palette="sadness" aria-pressed="false">難過</button>
+              <button type="button" class="anger" data-palette="anger" aria-pressed="false">生氣</button>
+              <button type="button" class="fear" data-palette="fear" aria-pressed="false">害怕</button>
+              <button type="button" class="disgust" data-palette="disgust" aria-pressed="false">厭惡</button>
+            </div>
+            <div class="palette-balance" hidden>
+              <label for="palette-ratio">哪一種感覺更明顯？</label>
+              <div class="palette-range"><span id="palette-left"></span><input type="range" id="palette-ratio" min="10" max="90" step="10" value="50"><span id="palette-right"></span></div>
+            </div>
+            <p id="palette-result" aria-live="polite">想想今天發生的一件事，再選出最貼近當時的感受。</p>
+            <button type="button" class="palette-clear" id="palette-clear" disabled>清除選擇</button>
+          </div>
+        </div>
+        <div class="practice-steps" id="practice" tabindex="-1">
+          <article>
+            <p class="detail-label">01 · 察覺</p>
+            <h3>我現在怎麼了？</h3>
+            <p>上臺前心跳很快。也許我很緊張，也有點期待。</p>
+          </article>
+          <article>
+            <p class="detail-label">02 · 命名</p>
+            <h3>兩種感受都說出來。</h3>
+            <p>「我怕忘詞，也很想把準備好的內容分享給大家。」</p>
+          </article>
+          <article>
+            <p class="detail-label">03 · 回應</p>
+            <h3>我現在需要什麼？</h3>
+            <p>「可以聽我練習一次開場嗎？」先從一個做得到的小動作開始。</p>
+          </article>
+        </div>
+      </div>
+      <div class="shell chapter-footer">
+        <a class="chapter-link" href="#mission"><span aria-hidden="true">←</span> 情境任務</a>
+        <span class="chapter-number" aria-hidden="true">05 / 06</span>
+        <a class="chapter-link" href="#quiz">情緒測驗 <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+
+    <section class="chapter-screen quiz" id="quiz" aria-labelledby="quiz-title">
+      <div class="shell chapter-body">
+        <div class="section-heading">
+          <div>
+            <p class="chapter"><span>06</span> HEADQUARTERS QUIZ</p>
+            <h2 id="quiz-title">腦內總部<em>小測驗。</em></h2>
+          </div>
+          <p>從萊莉的故事到你的日常，共 10 題。選完會立刻看到解析。</p>
+        </div>
+        <div class="quiz-layout">
+          <aside class="quiz-guide">
+            <svg aria-hidden="true"><use href="#spark" /></svg>
+            <p class="detail-label">任務簡報</p>
+            <h3>找出情緒想告訴你的事。</h3>
+            <ul>
+              <li>辨認角色和情緒訊號</li>
+              <li>看懂同一段回憶的兩種感受</li>
+              <li>練習說出需要、回應別人的心情</li>
+            </ul>
+          </aside>
+          <div class="quiz-console">
+            <div id="quiz-content" hidden>
+              <div class="quiz-meter">
+                <p id="quiz-progress-label" class="detail-label"></p>
+                <progress id="quiz-progress" value="0" aria-label="已作答題數"></progress>
+              </div>
+              <div id="quiz-round">
+                <h3 id="quiz-question" tabindex="-1"></h3>
+                <div id="quiz-answers" class="quiz-answers" role="group" aria-labelledby="quiz-question"></div>
+                <div class="quiz-feedback" aria-live="polite" aria-atomic="true"></div>
+                <div class="quiz-actions">
+                  <button type="button" class="primary-button" id="quiz-next" disabled>下一題 <span aria-hidden="true">→</span></button>
+                </div>
+              </div>
+              <div id="quiz-result" hidden>
+                <h3 id="quiz-score" tabindex="-1"></h3>
+                <p id="quiz-summary"></p>
+                <ol id="quiz-review" class="quiz-review"></ol>
+                <button type="button" class="primary-button" id="quiz-restart">再挑戰一次 <span aria-hidden="true">↻</span></button>
+              </div>
+            </div>
+            <noscript><p>開啟 JavaScript 後就能開始測驗。</p></noscript>
+          </div>
+        </div>
+      </div>
+      <div class="shell chapter-footer">
+        <a class="chapter-link" href="#lab"><span aria-hidden="true">←</span> 情緒練習</a>
+        <span class="chapter-number" aria-hidden="true">06 / 06</span>
+        <a class="chapter-link" href="#top">回到回憶球 <span aria-hidden="true">↗</span></a>
+      </div>
+      <footer class="shell source-footer">
+        <span>《腦筋急轉彎》電影主題探索</span>
+        <div class="footer-links"><a href="https://www.pixar.com/inside-out">電影與角色介紹 · Pixar</a><a
+            href="https://video.disney.com/watch/riley-s-memories-inside-out-clip-5230b44b3df210a316fdb257">萊莉的回憶 · Disney 片段</a></div>
+      </footer>
+    </section>
+      </div>
+    </dialog>
+  </main>
+</body>
+
+</html>
